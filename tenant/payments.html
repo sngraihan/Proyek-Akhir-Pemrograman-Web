@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pembayaran - Manajemen Kos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .card { border: 1px solid #000 !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary no-print">
+        <div class="container">
+            <a class="navbar-brand" href="#">Panel Penyewa</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="dashboard.html">
+                        <i class="bi bi-house-door"></i> Dashboard
+                    </a>
+                    <a class="nav-link" href="profile.html">
+                        <i class="bi bi-person"></i> Profile
+                    </a>
+                    <a class="nav-link active" href="payments.html">
+                        <i class="bi bi-wallet2"></i> Pembayaran
+                    </a>
+                    <span class="navbar-text mx-3 text-white">
+                        <i class="bi bi-person-circle"></i> <span id="tenant-name">Nama Penyewa</span>
+                    </span>
+                    <a class="nav-link" href="../logout.html">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2>Riwayat Pembayaran</h2>
+            </div>
+            <div class="col-md-4 text-end no-print">
+                <button class="btn btn-success" onclick="window.print()">
+                    <i class="bi bi-printer"></i> Cetak
+                </button>
+                <a href="dashboard.html" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pembayaran</h5>
+                        <h3 id="total-payments">1</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Lunas</h5>
+                        <h4 id="total-paid">Rp 0</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pending</h5>
+                        <h4 id="total-pending">Rp 0</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center bg-danger text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Terlambat</h5>
+                        <h4 id="total-overdue">Rp 500.000</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="card mb-4 no-print">
+            <div class="card-body">
+                <form method="GET" class="row g-3" id="filterForm">
+                    <div class="col-md-4">
+                        <label class="form-label">Filter Status</label>
+                        <select class="form-select" name="filter_status" id="filter_status">
+                            <option value="">Semua Status</option>
+                            <option value="paid">Lunas</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Terlambat</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Filter Tahun</label>
+                        <select class="form-select" name="filter_year" id="filter_year">
+                            <option value="">Semua Tahun</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Cari Bulan</label>
+                        <input type="month" class="form-control" name="search_month" id="search_month">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payment History Table -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Detail Pembayaran</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Bulan</th>
+                                <th>Kamar</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Status</th>
+                                <th class="no-print">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-tbody">
+                            <tr>
+                                <td>1</td>
+                                <td><strong>Juli 2025</strong></td>
+                                <td>A02</td>
+                                <td>Rp 500.000</td>
+                                <td>31/05/2025</td>
+                                <td>
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-exclamation-circle"></i> Terlambat
+                                    </span>
+                                </td>
+                                <td class="no-print">
+                                    <button class="btn btn-sm btn-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#detailModal1">
+                                        <i class="bi bi-eye"></i> Detail
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-secondary">
+                                <th colspan="3">Total</th>
+                                <th id="total-amount">Rp 500.000</th>
+                                <th colspan="3"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <p class="text-center text-muted" id="no-data-message" style="display: none;">Tidak ada data pembayaran yang sesuai filter</p>
+            </div>
+        </div>
+
+        <!-- Print Footer -->
+        <div class="mt-4 d-none d-print-block text-center">
+            <p>Dicetak pada: <span id="print-date"></span></p>
+            <p>Oleh: <span id="print-by">Nama Penyewa</span></p>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailModal1" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Pembayaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td width="40%"><strong>ID Pembayaran:</strong></td>
+                            <td>#000003</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bulan:</strong></td>
+                            <td>Juli 2025</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kamar:</strong></td>
+                            <td>A02</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jumlah:</strong></td>
+                            <td>Rp 500.000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tanggal Bayar:</strong></td>
+                            <td>31 Mei 2025</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td>
+                                <span class="badge bg-danger">Terlambat</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dibuat pada:</strong></td>
+                            <td>31/05/2025 17:33</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="printPayment(1)">
+                        <i class="bi bi-printer"></i> Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Set print date
+    document.getElementById('print-date').textContent = new Date().toLocaleString('id-ID');
+
+    function printPayment(paymentId) {
+        const modalContent = document.querySelector('#detailModal' + paymentId + ' .modal-body').innerHTML;
+        
+        const printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write('<html><head><title>Detail Pembayaran</title>');
+        printWindow.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<div class="container mt-4">');
+        printWindow.document.write('<h3>Detail Pembayaran Kos</h3>');
+        printWindow.document.write(modalContent);
+        printWindow.document.write('</div></body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    // Filter form handling
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Filter logic would go here
+        console.log('Filtering payments...');
+    });
+    </script>
+</body>
+</html>
