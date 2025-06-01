@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pembayaran - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Admin Panel</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="dashboard.html">Dashboard</a>
+                <a class="nav-link" href="rooms.html">Kelola Kamar</a>
+                <a class="nav-link" href="tenants.html">Data Penyewa</a>
+                <a class="nav-link active" href="payments.html">Pembayaran</a>
+                <a class="nav-link" href="../logout.html">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Kelola Pembayaran</h2>
+        
+        <div class="alert alert-success alert-dismissible fade show" id="success-alert" style="display: none;">
+            <span id="success-message"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        
+        <div class="alert alert-danger alert-dismissible fade show" id="error-alert" style="display: none;">
+            <span id="error-message"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Form Tambah Pembayaran -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Tambah Pembayaran</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="paymentForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Penyewa</label>
+                                <select class="form-control" name="tenant_id" id="tenant_id" required>
+                                    <option value="">Pilih Penyewa</option>
+                                    <!-- Tenant options will be populated here -->
+                                </select>
+                                <div class="invalid-feedback">Pilih penyewa</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Bulan Pembayaran</label>
+                                <input type="month" class="form-control" name="payment_month" required>
+                                <div class="invalid-feedback">Pilih bulan pembayaran</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Jumlah (Rp)</label>
+                                <input type="number" class="form-control" name="amount" id="amount" min="1" required>
+                                <div class="invalid-feedback">Jumlah harus lebih dari 0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Bayar</label>
+                                <input type="date" class="form-control" name="payment_date" id="payment_date" required>
+                                <div class="invalid-feedback">Pilih tanggal pembayaran</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" name="status" required>
+                                    <option value="paid">Lunas</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="overdue">Terlambat</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" name="add_payment" class="btn btn-primary">Simpan Pembayaran</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filter -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <form method="GET" class="row g-3" id="filterForm">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="search" id="search"
+                               placeholder="Cari nama penyewa atau nomor kamar...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="filter_status" id="filter_status">
+                            <option value="">Semua Status</option>
+                            <option value="paid">Lunas</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Terlambat</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="month" class="form-control" name="filter_month" id="filter_month">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabel Pembayaran -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Daftar Pembayaran</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Penyewa</th>
+                                <th>Kamar</th>
+                                <th>Bulan</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-tbody">
+                            <!-- Payment data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Payment Template -->
+    <div class="modal fade" id="editPaymentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Pembayaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="payment_id" id="edit-payment-id">
+                        <div class="mb-3">
+                            <label class="form-label">Penyewa</label>
+                            <input type="text" class="form-control" id="edit-tenant-info" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bulan</label>
+                            <input type="text" class="form-control" id="edit-month-info" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jumlah (Rp)</label>
+                            <input type="number" class="form-control" name="new_amount" id="edit-amount" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Bayar</label>
+                            <input type="date" class="form-control" name="new_payment_date" id="edit-payment-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" name="new_status" id="edit-status" required>
+                                <option value="paid">Lunas</option>
+                                <option value="pending">Pending</option>
+                                <option value="overdue">Terlambat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" name="update_payment" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Set today's date as default
+    document.getElementById('payment_date').value = new Date().toISOString().split('T')[0];
+
+    // Auto-fill amount when tenant selected
+    document.getElementById('tenant_id').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        if (price) {
+            document.getElementById('amount').value = price;
+        }
+    });
+
+    // Form validation
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        const inputs = this.querySelectorAll('input[required], select[required]');
+        
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+        
+        // Additional validation for amount
+        const amount = document.getElementById('amount');
+        if (amount.value <= 0) {
+            amount.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
+
+    // Populate sample data
+    function populateTenantOptions() {
+        const tenantSelect = document.getElementById('tenant_id');
+        const sampleTenants = [
+            {id: 3, full_name: 'Raihan Andi Saungnaga', room_number: 'A01', price: 520000},
+            {id: 5, full_name: 'koron', room_number: 'A02', price: 500000}
+        ];
+
+        sampleTenants.forEach(tenant => {
+            const option = `<option value="${tenant.id}" data-price="${tenant.price}">${tenant.full_name} - Kamar ${tenant.room_number}</option>`;
+            tenantSelect.innerHTML += option;
+        });
+    }
+
+    function populatePaymentData() {
+        const tbody = document.getElementById('payments-tbody');
+        const samplePayments = [
+            {
+                id: 3,
+                full_name: 'koron',
+                room_number: 'A02',
+                payment_month: '2025-07',
+                amount: 500000,
+                payment_date: '2025-05-31',
+                status: 'overdue'
+            }
+        ];
+
+        tbody.innerHTML = '';
+        samplePayments.forEach((payment, index) => {
+            const statusBadge = payment.status === 'paid' ? 'bg-success' : 
+                               (payment.status === 'pending' ? 'bg-warning' : 'bg-danger');
+            const statusText = payment.status === 'paid' ? 'Lunas' : 
+                              (payment.status === 'pending' ? 'Pending' : 'Terlambat');
+
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${payment.full_name}</td>
+                    <td>${payment.room_number}</td>
+                    <td>${new Date(payment.payment_month + '-01').toLocaleDateString('id-ID', {year: 'numeric', month: 'long'})}</td>
+                    <td>Rp ${payment.amount.toLocaleString('id-ID')}</td>
+                    <td>${new Date(payment.payment_date).toLocaleDateString('id-ID')}</td>
+                    <td>
+                        <span class="badge ${statusBadge}">${statusText}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="editPayment(${payment.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deletePayment(${payment.id})">Hapus</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function editPayment(id) {
+        const modal = new bootstrap.Modal(document.getElementById('editPaymentModal'));
+        // Populate edit form with sample data
+        document.getElementById('edit-tenant-info').value = 'koron - A02';
+        document.getElementById('edit-month-info').value = 'Juli 2025';
+        document.getElementById('edit-amount').value = '500000';
+        document.getElementById('edit-payment-date').value = '2025-05-31';
+        document.getElementById('edit-status').value = 'overdue';
+        modal.show();
+    }
+
+    function deletePayment(id) {
+        if (confirm('Yakin ingin menghapus pembayaran ini?')) {
+            alert('Pembayaran berhasil dihapus!');
+            populatePaymentData();
+        }
+    }
+
+    // Initialize
+    populateTenantOptions();
+    populatePaymentData();
+    </script>
+</body>
+</html>
