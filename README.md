@@ -8,8 +8,11 @@ Aplikasi ini dikembangkan menggunakan teknologi web (HTML, CSS, JavaScript, PHP,
 
 👨‍💻 Anggota Kelompok
 Adrianne Julian Claresta – 2317051002
+
 Maura Hellena – 2317051105
+
 Raihan Andi Saungnaga – 2317051058
+
 Dymaz Satya Putra – 2357051017
 
 👨‍🏫 Dosen Pengampu
