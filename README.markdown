@@ -19,13 +19,13 @@ Manajemen Kos-Kosan adalah aplikasi berbasis web yang dirancang untuk mempermuda
   - PHP (versi 7.4 atau lebih tinggi)
   - MySQL (untuk database relasional)
 - **Tools dan Dependencies**:
-  - XAMPP (untuk lingkungan pengembangan lokal)
+  - XAMPP/Laragon (untuk lingkungan pengembangan lokal)
   - Composer (opsional, untuk manajemen dependensi PHP)
   - Git (untuk version control)
 
 ## Prasyarat
 Sebelum menjalankan proyek ini, pastikan Anda telah menginstall:
-- [XAMPP](https://www.apachefriends.org/) atau server lokal lainnya (Apache, MySQL).
+- [XAMPP](https://www.apachefriends.org/) / [Laragon](https://laragon.org/) atau server lokal lainnya (Apache, MySQL).
 - [Git](https://git-scm.com/) untuk mengelola repository.
 - Browser modern (Google Chrome, Firefox, dll.).
 - PHP versi 7.4 atau lebih tinggi.
@@ -86,15 +86,10 @@ Proyek-Akhir-Pemrograman-Web/
    - Keluar dari sistem untuk keamanan.
 
 ## Kontributor
-- **Sngraihan** - Pengembang utama dan pengelola proyek.
+- [Raiihan Andi Saungnaga](https://github.com/sngraihan)
+- [Dymaz Satya Putra](https://github.com/DYmazeh)
+- [Adrianne Julian Claresta](https://github.com/Idheid) 
+- [Maurah Hellena](https://github.com/Mauraa16) 
 
 ## Lisensi
 Proyek ini dilisensikan di bawah [MIT License](LICENSE). Silakan gunakan, modifikasi, dan distribusikan sesuai kebutuhan.
-
-## Kontak
-Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan hubungi:
-- **Nama**: Sngraihan
-- **Email**: [email@example.com](mailto:email@example.com)
-- **GitHub**: [sngraihan](https://github.com/sngraihan)
-
-Terima kasih telah menggunakan Manajemen Kos-Kosan! 🏠
