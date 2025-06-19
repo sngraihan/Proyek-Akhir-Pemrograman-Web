@@ -16,99 +16,88 @@ $pending_payments = $conn->query("SELECT COUNT(*) as count FROM payments WHERE s
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Manajemen Kos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/d_admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Admin Panel</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="dashboard.php">Dashboard</a>
-                <a class="nav-link" href="rooms.php">Kelola Kamar</a>
-                <a class="nav-link" href="tenants.php">Data Penyewa</a>
-                <a class="nav-link" href="payments.php">Pembayaran</a>
-                <a class="nav-link" href="../logout.php">Logout</a>
-            </div>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../assets/images/logo.jpg" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
+            <span>Kozan</span>
         </div>
-    </nav>
+        <a href="dashboard.php" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="rooms.php"><i class="fas fa-door-open"></i> Kelola Kamar</a>
+        <a href="tenants.php"><i class="fas fa-users"></i> Data Penyewa</a>
+        <a href="payments.php"><i class="fas fa-money-bill-wave"></i> Pembayaran</a>
+        <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
 
     <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                <h2>Dashboard Admin</h2>
-                <p>Selamat datang, <?= $_SESSION['full_name'] ?>!</p>
-            </div>
+    <div class="content">
+        <div class="header d-flex justify-content-between align-items-center">
+            <h2>Dashboard Admin</h2>
+            <div class="welcome">Hi <?= $_SESSION['full_name'] ?></div>
         </div>
 
         <!-- Statistik Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card text-white bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Kamar</h5>
-                        <h2><?= $total_rooms ?></h2>
+        <div class="card-dashboard mt-3">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Total Kamar</h6>
+                        <h3><?= $total_rooms ?></h3>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-success">
-                    <div class="card-body">
-                        <h5 class="card-title">Kamar Terisi</h5>
-                        <h2><?= $occupied_rooms ?></h2>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Kamar Terisi</h6>
+                        <h3><?= $occupied_rooms ?></h3>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-info">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Penyewa</h5>
-                        <h2><?= $total_tenants ?></h2>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Total Penyewa</h6>
+                        <h3><?= $total_tenants ?></h3>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-white bg-warning">
-                    <div class="card-body">
-                        <h5 class="card-title">Pembayaran Pending</h5>
-                        <h2><?= $pending_payments ?></h2>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <h6>Pembayaran Pending</h6>
+                        <h3><?= $pending_payments ?></h3>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Menu Utama</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <a href="rooms.php" class="btn btn-primary btn-lg w-100 mb-3">
-                                    Kelola Data Kamar
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="tenants.php" class="btn btn-success btn-lg w-100 mb-3">
-                                    Kelola Data Penyewa
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="payments.php" class="btn btn-info btn-lg w-100 mb-3">
-                                    Kelola Pembayaran
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card-dashboard mt-4">
+            <h5 class="fw-bold mb-4" style="color: #2a69ac;">Menu Utama</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="rooms.php" class="quick-action">
+                        <i class="fas fa-door-open"></i>
+                        <div>Kelola Data Kamar</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tenants.php" class="quick-action">
+                        <i class="fas fa-users"></i>
+                        <div>Kelola Data Penyewa</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="payments.php" class="quick-action">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>Kelola Pembayaran</div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
