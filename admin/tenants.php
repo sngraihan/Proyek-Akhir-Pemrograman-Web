@@ -125,24 +125,32 @@ $all_rooms = $conn->query("SELECT * FROM rooms ORDER BY room_number")->fetch_all
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Penyewa - Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/d_admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Admin Panel</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="dashboard.php">Dashboard</a>
-                <a class="nav-link" href="rooms.php">Kelola Kamar</a>
-                <a class="nav-link active" href="tenants.php">Data Penyewa</a>
-                <a class="nav-link" href="payments.php">Pembayaran</a>
-                <a class="nav-link" href="../logout.php">Logout</a>
-            </div>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../assets/images/logo.jpg" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
+            <span>Kozan</span>
         </div>
-    </nav>
+        <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="rooms.php"><i class="fas fa-door-open"></i> Kelola Kamar</a>
+        <a href="tenants.php" class="active"><i class="fas fa-users"></i> Data Penyewa</a>
+        <a href="payments.php"><i class="fas fa-money-bill-wave"></i> Pembayaran</a>
+        <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
 
-    <div class="container mt-4">
-        <h2>Kelola Data Penyewa</h2>
+    <!-- Main Content -->
+    <div class="content">
+        <div class="header d-flex justify-content-between align-items-center">
+            <h2>Kelola Data Penyewa</h2>
+            <div class="welcome">Hi <?= $_SESSION['full_name'] ?></div>
+        </div>
+
+        <div class="mt-3">
         
         <?php if (isset($success)): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -250,6 +258,7 @@ $all_rooms = $conn->query("SELECT * FROM rooms ORDER BY room_number")->fetch_all
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Modal Edit untuk setiap tenant -->
