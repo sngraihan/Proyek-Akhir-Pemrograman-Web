@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 31, 2025 at 05:48 PM
+-- Generation Time: Jun 19, 2025 at 05:07 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -43,7 +43,10 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `tenant_id`, `room_id`, `amount`, `payment_date`, `payment_month`, `status`, `created_at`) VALUES
-(3, 5, 3, 500000.00, '2025-05-31', '2025-07', 'overdue', '2025-05-31 17:33:01');
+(3, 5, 3, 500000.00, '2025-05-31', '2025-07', 'overdue', '2025-05-31 17:33:01'),
+(5, 5, 3, 500000.00, '2025-06-02', '2025-12', 'paid', '2025-06-02 01:03:45'),
+(7, 9, 11, 50000000.00, '2025-06-11', '2025-11', 'paid', '2025-06-02 02:08:28'),
+(11, 11, 7, 1300000.00, '2025-06-30', '2025-06', 'paid', '2025-06-19 16:55:00');
 
 -- --------------------------------------------------------
 
@@ -70,7 +73,33 @@ INSERT INTO `rooms` (`id`, `room_number`, `room_type`, `price`, `status`, `descr
 (1, 'A01', 'Standard', 520000.00, 'occupied', 'Kamar standar dengan fasilitas AC', 3, '2025-05-31 16:10:38'),
 (3, 'A02', 'Standard', 500000.00, 'occupied', 'Kamar standar dengan fasilitas AC', 5, '2025-05-31 16:10:38'),
 (5, 'B01', 'Premium', 750000.00, 'available', 'Kamar premium dengan kamar mandi dalam', NULL, '2025-05-31 16:10:38'),
-(7, 'D01', 'Deluxe', 1300000.00, 'available', 'Kamar dengan dapur pribadi, wc pribadi, ac, dan tv', NULL, '2025-05-31 17:41:30');
+(7, 'D01', 'Deluxe', 1300000.00, 'occupied', 'Kamar dengan dapur pribadi, wc pribadi, ac, dan tv', 11, '2025-05-31 17:41:30'),
+(11, 'M11', 'Deluxe', 50000000.00, 'occupied', 'keren', 9, '2025-06-02 02:04:28'),
+(15, 'R11', 'Premium', 400000.00, 'available', 'keren banget', NULL, '2025-06-19 16:50:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tenant_additional_info`
+--
+
+CREATE TABLE `tenant_additional_info` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `emergency_contact` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tenant_additional_info`
+--
+
+INSERT INTO `tenant_additional_info` (`id`, `user_id`, `email`, `phone`, `emergency_contact`, `created_at`, `updated_at`) VALUES
+(1, 5, 'koronasalim@gmail.com', '081383341841', 'Mama 08123123123', '2025-05-31 18:06:01', '2025-05-31 18:06:01'),
+(3, 11, 'adin@gmail.com', '', '', '2025-06-19 17:01:27', '2025-06-19 17:01:27');
 
 -- --------------------------------------------------------
 
@@ -94,7 +123,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `full_name`, `role`, `created_at`) VALUES
 (1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrator', 'admin', '2025-05-31 16:10:38'),
 (3, 'Raihan', '$2y$10$ze2ASf3v7GQsMB7ApGt.junwt/wxik8XGS73Y56ruPkqLx5IMGpta', 'Raihan Andi Saungnaga', 'tenant', '2025-05-31 16:30:22'),
-(5, 'koron', '$2y$10$rlLUTIG6laCc7tQKZKbtfe7KoJHJnwXQbVAdvB7W.c.stEnsizv7.', 'koron', 'tenant', '2025-05-31 16:31:44');
+(5, 'koron', '$2y$10$smVrb9Mz..OaIMspgZgVJeCiihMKvH89Umnr7lcdxzuWBztdeQj0.', 'koron salim', 'tenant', '2025-05-31 16:31:44'),
+(9, 'maura', '$2y$10$li6FoynmaKRho5BXc9E.IO8YnL.61caynQZnghFTiwmjDGpB70PZS', 'Maura', 'tenant', '2025-06-02 02:05:32'),
+(11, 'adin', '$2y$10$22.lbtCKJIF9xB7ZqLzfPuNPxd5TWAQqghki/fp4ldonNJ0DuvQS2', 'adin', 'tenant', '2025-06-19 16:52:36');
 
 --
 -- Indexes for dumped tables
@@ -117,6 +148,13 @@ ALTER TABLE `rooms`
   ADD KEY `tenant_id` (`tenant_id`);
 
 --
+-- Indexes for table `tenant_additional_info`
+--
+ALTER TABLE `tenant_additional_info`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -131,19 +169,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `tenant_additional_info`
+--
+ALTER TABLE `tenant_additional_info`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -161,6 +205,12 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `rooms`
   ADD CONSTRAINT `rooms_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `tenant_additional_info`
+--
+ALTER TABLE `tenant_additional_info`
+  ADD CONSTRAINT `tenant_additional_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
