@@ -1,7 +1,11 @@
-# Manajemen Kos-Kosan
+# Kozan
 
-Manajemen Kos-Kosan adalah aplikasi berbasis web yang dirancang untuk mempermudah pengelolaan data kos-kosan, termasuk informasi penyewa, kamar, pembayaran, dan laporan. Proyek ini dibuat sebagai bagian dari Proyek Akhir Pemrograman Web, menggunakan teknologi HTML, CSS, JavaScript, PHP, dan MySQL untuk membangun sistem yang efisien dan user-friendly.
+Kozan adalah aplikasi berbasis web yang dirancang untuk mempermudah pengelolaan data kos-kosan, termasuk informasi penyewa, kamar, pembayaran, dan laporan. Proyek ini dibuat sebagai bagian dari Proyek Akhir Pemrograman Web, menggunakan teknologi HTML, CSS, JavaScript, PHP, dan MySQL untuk membangun sistem yang efisien dan user-friendly.
 
+## Dosen Pengampu
+- M. Iqbal Parabi, S.SI.
+- M.T. Rizky Prabowo, M.Kom.
+  
 ## Fitur Utama
 - **Manajemen Penyewa**: Tambah, edit, dan hapus data penyewa.
 - **Manajemen Kamar**: Kelola informasi kamar seperti status (kosong/terisi), harga, dan fasilitas.
@@ -86,10 +90,10 @@ Proyek-Akhir-Pemrograman-Web/
    - Keluar dari sistem untuk keamanan.
 
 ## Kontributor
-- [Raiihan Andi Saungnaga](https://github.com/sngraihan)
-- [Dymaz Satya Putra](https://github.com/DYmazeh)
-- [Adrianne Julian Claresta](https://github.com/Idheid) 
-- [Maurah Hellena](https://github.com/Mauraa16) 
+- [Raihan Andi Saungnaga](https://github.com/sngraihan) 2317051058
+- [Dymaz Satya Putra](https://github.com/DYmazeh) 2357051017
+- [Adrianne Julian Claresta](https://github.com/Idheid) 2317051002
+- [Maurah Hellena](https://github.com/Mauraa16) 2317051105
 
 ## Lisensi
 Proyek ini dilisensikan di bawah [MIT License](LICENSE). Silakan gunakan, modifikasi, dan distribusikan sesuai kebutuhan.
