@@ -66,15 +66,39 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek ini di mesin lokal Anda:
 
 ## Struktur Direktori
 ```plaintext
-Proyek-Akhir-Pemrograman-Web/
-├── assets/                 # File statis seperti gambar, CSS, dan JS
-├── config/                 # File konfigurasi (contoh: database.php)
-├── database/               # File SQL untuk struktur database
-├── includes/               # File PHP untuk header, footer, dll.
-├── pages/                  # Halaman utama aplikasi (dashboard, penyewa, kamar, dll.)
-├── README.md               # File ini
-├── index.php               # Halaman utama aplikasi
-└── .gitignore              # File untuk mengabaikan file tertentu di Git
+PEMWEB/
+├── admin/                          # Folder untuk halaman admin
+│   ├── dashboard.php              # Dashboard utama admin dengan statistik
+│   ├── rooms.php                  # Kelola data kamar (CRUD)
+│   ├── tenants.php                # Kelola data penyewa (CRUD)
+│   └── payments.php               # Kelola pembayaran (CRUD)
+│
+├── tenant/                        # Folder untuk halaman penyewa
+│   ├── dashboard.php              # Dashboard penyewa dengan info kamar & pembayaran
+│   ├── profile.php                # Edit profil penyewa
+│   └── payments.php               # Riwayat pembayaran penyewa
+│
+├── assets/                        # Folder untuk aset statis
+│   ├── css/                       # File CSS
+│   │   ├── d_admin.css           # Styling khusus untuk halaman admin
+│   │   └── login.css             # Styling untuk halaman login
+│   └── images/                    # Gambar dan logo
+│       ├── logo.jpg              # Logo aplikasi
+│       └── loginimg.jpg          # Background image untuk login
+│
+├── config/                        # Konfigurasi aplikasi
+│   └── database.php              # Koneksi database MySQL
+│
+├── includes/                      # File PHP yang di-include
+│   ├── auth.php                  # Fungsi autentikasi dan session management
+│   └── validation.php            # Fungsi validasi input server-side
+│
+├── scripts/                       # Script database
+│   └── kos_management.sql        # Database schema dan sample data
+│
+├── index.php                      # Halaman utama (redirect berdasarkan role)
+├── login.php                      # Halaman login dengan validasi
+└── logout.php                     # Script logout dan destroy session
 ```
 
 ## Cara Penggunaan
